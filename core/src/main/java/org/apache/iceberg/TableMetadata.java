@@ -600,6 +600,16 @@ public class TableMetadata implements Serializable {
         addPreviousFile(file, lastUpdatedMillis));
   }
 
+  public TableMetadata replaceCurrentSchemaId(int schemaId) {
+    ValidationException.check(schemasById.containsKey(schemaId),
+            "Cannot set current schema id to unknown: %s", schemaId);
+
+    return new TableMetadata(null, formatVersion, uuid, location,
+            lastSequenceNumber, lastUpdatedMillis, lastColumnId, schemaId, schemas, defaultSpecId, specs,
+            lastAssignedPartitionId, defaultSortOrderId, sortOrders, properties,
+            currentSnapshotId, snapshots, snapshotLog, addPreviousFile(file, lastUpdatedMillis));
+  }
+
   public TableMetadata replaceCurrentSnapshot(Snapshot snapshot) {
     // there can be operations (viz. rollback, cherrypick) where an existing snapshot could be replacing current
     if (snapshotsById.containsKey(snapshot.snapshotId())) {

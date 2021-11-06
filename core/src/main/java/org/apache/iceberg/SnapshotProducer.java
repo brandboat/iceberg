@@ -289,6 +289,8 @@ abstract class SnapshotProducer<ThisT> implements SnapshotUpdate<ThisT> {
               updated = base.replaceCurrentSnapshot(newSnapshot);
             }
 
+            updated = updated.replaceCurrentSchemaId(newSnapshot.schemaId());
+
             if (updated == base) {
               // do not commit if the metadata has not changed. for example, this may happen when setting the current
               // snapshot to an ID that is already current. note that this check uses identity.
